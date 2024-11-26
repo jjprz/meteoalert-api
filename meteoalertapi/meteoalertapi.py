@@ -24,7 +24,7 @@ class Meteoalert(object):
 
     def get_alert(self):
         """Retrieve alert data"""
-        data = {}
+        alerts = []
 
         try:
             url = self.endpoint.format(self.country)
@@ -74,7 +74,8 @@ class Meteoalert(object):
             alert = alert_data.get('alert', {})
             # Get the alert data in the requested language
             translations = alert.get('info', [])
-
+            
+            data = {}
             try:
                 for translation in translations:
                     if self.language not in translation.get('language'):
@@ -100,8 +101,10 @@ class Meteoalert(object):
             except:
                 pass
                 pass
-            break
-        return data
+            
+            alerts.append(data)
+            
+        return alerts
 
     def is_location_match(self, entry, province):
         # Attempt to match the province first by regex on name
