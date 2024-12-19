@@ -22,8 +22,8 @@ class Meteoalert(object):
         self.province = province
         self.language = language
 
-    def get_alert(self):
-        """Retrieve alert data"""
+    def _fetch_alerts(self):
+        """Retrieve alert or alerts data"""
         alerts = []
 
         try:
@@ -105,6 +105,15 @@ class Meteoalert(object):
             alerts.append(data)
             
         return alerts
+
+    def get_alert(self):
+        """Retrieve the first alert."""
+        alerts = self._fetch_alerts()
+        return alerts[0] if alerts else {}
+
+    def get_alerts(self):
+        """Retrieve all alerts."""
+        return self._fetch_alerts()
 
     def is_location_match(self, entry, province):
         # Attempt to match the province first by regex on name
